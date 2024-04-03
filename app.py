@@ -21,7 +21,6 @@ import streamlit as st
 top_p= 1.0
 frequency_penalty= 0.0
 presence_penalty= 0.0
-openai_api_key="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"
 model_name=['gpt-3.5-turbo','gpt-4-turbo-preview']
 
 
@@ -42,7 +41,7 @@ with st.sidebar:
         openai_api_key = st.secrets['openai_api_key']
     else:
         openai_api_key = st.text_input('Enter openai API token:', type='password')
-        if not (openai_api_key.startswith('sk-') and len(openai_api_key)==48):
+        if not (openai_api_key):
             st.warning('Please enter your credentials!', icon='⚠️')
         else:
             st.success('Proceed to entering your prompt message!', icon='👉')
@@ -111,7 +110,7 @@ def generate_llm_response(course,lesson):
     chains=chains,
     input_variables=["course","lesson"],
     output_variables=["lecture", "quizzes","practice_code","final_output"],
-    verbose=True
+
 )    
     output=overall_chain.invoke({"course":course,"lesson":lesson})
     return output
@@ -153,6 +152,7 @@ if st.session_state.messages[-1]["role"] != "assistant":
             #     full_response += item
             #     placeholder.markdown(full_response)
             # placeholder.markdown(json_output)
+            filename="json_output.json"
             st.json(json_output)
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
