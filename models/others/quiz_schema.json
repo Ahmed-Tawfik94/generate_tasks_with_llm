@@ -1,0 +1,1232 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "video": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer"
+          },
+          "task_type": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "difficulty": {
+                "type": "integer"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "faqs": {
+                "type": "array",
+                "items": {}
+              },
+              "hint": {
+                "type": "string"
+              },
+              "hints": {
+                "type": "array",
+                "items": {}
+              },
+              "intro": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              },
+              "video": {
+                "type": "string"
+              },
+              "video_source": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "difficulty",
+              "caption",
+              "faqs",
+              "hint",
+              "hints",
+              "intro",
+              "tag",
+              "video",
+              "video_source"
+            ]
+          }
+        },
+        "required": [
+          "index",
+          "task_type",
+          "metadata"
+        ]
+      },
+      "quiz": {
+        "type": "object",
+        "properties": {
+          "task_type": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "questions": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "string"
+                      },
+                      "hint": {
+                        "type": "string"
+                      },
+                      "answers": {
+                        "type": "array",
+                        "items": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "text": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "text",
+                              "value"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "text": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "text",
+                              "value"
+                            ]
+                          }
+                        ]
+                      },
+                      "failed": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "answer": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "success",
+                      "hint",
+                      "answers",
+                      "failed",
+                      "text",
+                      "answer",
+                      "type"
+                    ]
+                  }
+                ]
+              },
+              "difficulty": {
+                "type": "integer"
+              },
+              "multi_choice": {
+                "type": "boolean"
+              },
+              "hint": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "intro": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              },
+              "hints": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "cost": {
+                        "type": "number"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "cost",
+                      "text"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "questions",
+              "difficulty",
+              "multi_choice",
+              "hint",
+              "caption",
+              "intro",
+              "tag",
+              "hints"
+            ]
+          }
+        },
+        "required": [
+          "task_type",
+          "action",
+          "metadata"
+        ]
+      },
+      "blank": {
+        "type": "object",
+        "properties": {
+          "task_type": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "difficulty": {
+                "type": "integer"
+              },
+              "hint": {
+                "type": "string"
+              },
+              "hints": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "cost": {
+                        "type": "number"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "cost",
+                      "text"
+                    ]
+                  }
+                ]
+              },
+              "intro": {
+                "type": "string"
+              },
+              "precode": {
+                "type": "string"
+              },
+              "problem": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "answer",
+              "caption",
+              "difficulty",
+              "hint",
+              "hints",
+              "intro",
+              "precode",
+              "problem",
+              "tag",
+              "type"
+            ]
+          },
+          "code_language": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_type",
+          "action",
+          "metadata",
+          "code_language"
+        ]
+      },
+      "code_python": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "py": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "py"
+                    ]
+                  }
+                ]
+              },
+              "auto_verify": {
+                "type": "boolean"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "difficulty": {
+                "type": "integer"
+              },
+              "events": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "caption": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "caption",
+                      "key"
+                    ]
+                  }
+                ]
+              },
+              "hint": {
+                "type": "string"
+              },
+              "hints": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "cost": {
+                        "type": "number"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "cost",
+                      "text"
+                    ]
+                  }
+                ]
+              },
+              "intro": {
+                "type": "string"
+              },
+              "precode": {
+                "type": "object",
+                "properties": {
+                  "py": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "py"
+                ]
+              },
+              "problem": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              },
+              "type": {
+                "type": "string"
+              },
+              "verification_type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "answer",
+              "auto_verify",
+              "caption",
+              "difficulty",
+              "events",
+              "hint",
+              "hints",
+              "intro",
+              "precode",
+              "problem",
+              "tag",
+              "type",
+              "verification_type"
+            ]
+          },
+          "task_type": {
+            "type": "string"
+          },
+          "code_language": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "metadata",
+          "task_type",
+          "code_language"
+        ]
+      },
+      "code_html": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "html": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "html"
+                    ]
+                  }
+                ]
+              },
+              "auto_verify": {
+                "type": "boolean"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "difficulty": {
+                "type": "integer"
+              },
+              "drawing": {
+                "type": "boolean"
+              },
+              "events": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "caption": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "caption",
+                      "key"
+                    ]
+                  }
+                ]
+              },
+              "hint": {
+                "type": "string"
+              },
+              "hints": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "cost": {
+                        "type": "number"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "cost",
+                      "text"
+                    ]
+                  }
+                ]
+              },
+              "intro": {
+                "type": "string"
+              },
+              "precode": {
+                "type": "object",
+                "properties": {
+                  "html": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "html"
+                ]
+              },
+              "problem": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              },
+              "type": {
+                "type": "string"
+              },
+              "verification_type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "answer",
+              "auto_verify",
+              "caption",
+              "difficulty",
+              "drawing",
+              "events",
+              "hint",
+              "hints",
+              "intro",
+              "precode",
+              "problem",
+              "tag",
+              "type",
+              "verification_type"
+            ]
+          },
+          "task_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "metadata",
+          "task_type"
+        ]
+      },
+      "code_css": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "css": {
+                        "type": "string"
+                      },
+                      "html": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "css",
+                      "html"
+                    ]
+                  }
+                ]
+              },
+              "auto_verify": {
+                "type": "boolean"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "difficulty": {
+                "type": "integer"
+              },
+              "drawing": {
+                "type": "boolean"
+              },
+              "events": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "caption": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "caption",
+                      "key"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "caption": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "caption",
+                      "key"
+                    ]
+                  }
+                ]
+              },
+              "hint": {
+                "type": "string"
+              },
+              "hints": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "cost": {
+                        "type": "number"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "cost",
+                      "text"
+                    ]
+                  }
+                ]
+              },
+              "intro": {
+                "type": "string"
+              },
+              "precode": {
+                "type": "object",
+                "properties": {
+                  "css": {
+                    "type": "string"
+                  },
+                  "html": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "css",
+                  "html"
+                ]
+              },
+              "problem": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              },
+              "type": {
+                "type": "string"
+              },
+              "verification_type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "answer",
+              "auto_verify",
+              "caption",
+              "difficulty",
+              "drawing",
+              "events",
+              "hint",
+              "hints",
+              "intro",
+              "precode",
+              "problem",
+              "tag",
+              "type",
+              "verification_type"
+            ]
+          },
+          "task_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "metadata",
+          "task_type"
+        ]
+      },
+      "code_javascript": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "javascript": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "javascript"
+                    ]
+                  }
+                ]
+              },
+              "auto_verify": {
+                "type": "boolean"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "difficulty": {
+                "type": "integer"
+              },
+              "events": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "caption": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "caption",
+                      "key"
+                    ]
+                  }
+                ]
+              },
+              "hint": {
+                "type": "string"
+              },
+              "hints": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "cost": {
+                        "type": "number"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "cost",
+                      "text"
+                    ]
+                  }
+                ]
+              },
+              "intro": {
+                "type": "string"
+              },
+              "precode": {
+                "type": "object",
+                "properties": {
+                  "javascript": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "javascript"
+                ]
+              },
+              "problem": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              },
+              "type": {
+                "type": "string"
+              },
+              "verification_type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "answer",
+              "auto_verify",
+              "caption",
+              "difficulty",
+              "events",
+              "hint",
+              "hints",
+              "intro",
+              "precode",
+              "problem",
+              "tag",
+              "type",
+              "verification_type"
+            ]
+          },
+          "task_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "metadata",
+          "task_type"
+        ]
+      },
+      "code_html-css-javascript": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "css": {
+                        "type": "string"
+                      },
+                      "html": {
+                        "type": "string"
+                      },
+                      "javascript": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "css",
+                      "html",
+                      "javascript"
+                    ]
+                  }
+                ]
+              },
+              "auto_verify": {
+                "type": "boolean"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "difficulty": {
+                "type": "integer"
+              },
+              "drawing": {
+                "type": "boolean"
+              },
+              "events": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "caption": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "caption",
+                      "key"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "caption": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "caption",
+                      "key"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "caption": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "caption",
+                      "key"
+                    ]
+                  }
+                ]
+              },
+              "hint": {
+                "type": "string"
+              },
+              "hints": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "cost": {
+                        "type": "number"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "cost",
+                      "text"
+                    ]
+                  }
+                ]
+              },
+              "intro": {
+                "type": "string"
+              },
+              "precode": {
+                "type": "object",
+                "properties": {
+                  "css": {
+                    "type": "string"
+                  },
+                  "html": {
+                    "type": "string"
+                  },
+                  "javascript": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "css",
+                  "html",
+                  "javascript"
+                ]
+              },
+              "problem": {
+                "type": "string"
+              },
+              "publish_web": {
+                "type": "boolean"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              },
+              "type": {
+                "type": "string"
+              },
+              "verification_type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "answer",
+              "auto_verify",
+              "caption",
+              "difficulty",
+              "drawing",
+              "events",
+              "hint",
+              "hints",
+              "intro",
+              "precode",
+              "problem",
+              "publish_web",
+              "tag",
+              "type",
+              "verification_type"
+            ]
+          },
+          "task_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "metadata",
+          "task_type"
+        ]
+      },
+      "blank_code": {
+        "type": "object",
+        "properties": {
+          "task_type": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "py": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "py"
+                    ]
+                  }
+                ]
+              },
+              "caption": {
+                "type": "string"
+              },
+              "update_difficulty": {
+                "type": "boolean"
+              },
+              "difficulty": {
+                "type": "integer"
+              },
+              "events": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "caption": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "caption",
+                      "key"
+                    ]
+                  }
+                ]
+              },
+              "language": {
+                "type": "string"
+              },
+              "hint": {
+                "type": "string"
+              },
+              "hints": {
+                "type": "array",
+                "items": {}
+              },
+              "intro": {
+                "type": "string"
+              },
+              "precode": {
+                "type": "object",
+                "properties": {
+                  "py": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "py"
+                ]
+              },
+              "problem": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              },
+              "auto_verify": {
+                "type": "boolean"
+              },
+              "solution": {
+                "type": "object",
+                "properties": {
+                  "py": {
+                    "type": "object",
+                    "properties": {
+                      "0": {
+                        "type": "array",
+                        "items": [
+                          {
+                            "type": "string"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "0"
+                    ]
+                  }
+                },
+                "required": [
+                  "py"
+                ]
+              }
+            },
+            "required": [
+              "answer",
+              "caption",
+              "update_difficulty",
+              "difficulty",
+              "events",
+              "language",
+              "hint",
+              "hints",
+              "intro",
+              "precode",
+              "problem",
+              "type",
+              "tag",
+              "auto_verify",
+              "solution"
+            ]
+          }
+        },
+        "required": [
+          "task_type",
+          "action",
+          "metadata"
+        ]
+      },
+      "lecture": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "auto_verify": {
+                "type": "boolean"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "difficulty": {
+                "type": "integer"
+              },
+              "hint": {
+                "type": "string"
+              },
+              "hints": {
+                "type": "array",
+                "items": {}
+              },
+              "intro": {
+                "type": "string"
+              },
+              "problem": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "array",
+                "items": {}
+              }
+            },
+            "required": [
+              "auto_verify",
+              "caption",
+              "difficulty",
+              "hint",
+              "hints",
+              "intro",
+              "problem",
+              "tag"
+            ]
+          },
+          "task_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "metadata",
+          "task_type"
+        ]
+      }
+    },
+    "required": [
+      "video",
+      "quiz",
+      "blank",
+      "code_python",
+      "code_html",
+      "code_css",
+      "code_javascript",
+      "code_html-css-javascript",
+      "blank_code",
+      "lecture"
+    ]
+  }

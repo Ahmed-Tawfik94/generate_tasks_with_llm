@@ -13,3 +13,9 @@ def get_json(data):
     json_data = demjson3.decode(modified_string)
     formatted = JsonFormatter(json_data)
     return demjson3.encode(formatted.json_fmt)
+def is_valid_json(json_str):
+    try:
+        json.loads(json_str)
+        return True
+    except json.JSONDecodeError:
+      return False

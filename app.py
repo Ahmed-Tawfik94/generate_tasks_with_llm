@@ -1,7 +1,7 @@
 from langchain_core.pydantic_v1 import BaseModel, Field,validator
 from langchain_core.prompts import ChatPromptTemplate , PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser , StrOutputParser
-
+import tiktoken
 # from langchain_core.messages import HumanMessage, SystemMessage
 # from langchain_core.prompts.chat import (
 #     ChatPromptTemplate,
@@ -10,26 +10,34 @@ from langchain_core.output_parsers import JsonOutputParser , StrOutputParser
 #     AIMessage
 # )
 import json , re
+import pprint
 import demjson3
+from models.shared import Hint
 from langchain.chains import LLMChain
 from langchain.chains import SequentialChain
 from langchain_openai import ChatOpenAI, OpenAI
-from chains import first_prompt, second_prompt, third_prompt,forth_prompt ,initail_prompt
+# from langchain_anthropic import ChatAnthropic
+from utils.chains import first_prompt, second_prompt, third_prompt,forth_prompt ,initail_prompt
 import streamlit as st
-
+from utils.utils import is_valid_json
 # initialize llm 
 top_p= 1.0
 frequency_penalty= 0.0
 presence_penalty= 0.0
-model_name=['gpt-3.5-turbo','gpt-4-turbo-preview']
+model_name={
+    'GPT-3.5':"gpt-3.5-turbo",
+    "GPT-4":'gpt-4-turbo-preview',
+    "Claude3 opus":'claude-3-opus-20240229',
+    "Claude3 Sonnet":'claude-3-sonnet-20240229',
+    "Claude3 Haiku":'claude-3-haiku-20240307'
+    }
 
 
-# json_parser= JsonOutputParser(pydantic_object=Lesson)
+
 parser= StrOutputParser()
 
 import streamlit as st
 import os
-
 # App title
 st.set_page_config(page_title="Generate tasks with llm")
 
@@ -39,6 +47,7 @@ with st.sidebar:
     if 'openai_api_key' in st.secrets:
         st.success('API key already provided!', icon='✅')
         openai_api_key = st.secrets['openai_api_key']
+        anthropic_api_key = st.secrets['anthropic_api_key']
     else:
         openai_api_key = st.text_input('Enter openai API token:', type='password')
         if not (openai_api_key):
@@ -48,23 +57,31 @@ with st.sidebar:
 
     # Refactored from https://github.com/a16z-infra/llama2-chatbot
     st.subheader('Models and parameters')
-    selected_model = st.sidebar.selectbox('Choose a model', model_name, key='selected_model')
-    if selected_model == model_name[0]:
-        llm = ChatOpenAI(model=model_name[0],
+    selected_model = st.sidebar.selectbox('Choose a model', model_name.keys(), key='selected_model')
+    if selected_model =='GPT-3.5':
+        llm = ChatOpenAI(model=model_name['GPT-3.5'],
                 openai_api_key=openai_api_key,
                 model_kwargs={
                 "frequency_penalty":0.0,
                 "presence_penalty":0.0})
-    elif selected_model == model_name[1]:
-        llm = ChatOpenAI(model=model_name[1],
+    elif selected_model =="GPT-4":
+        llm = ChatOpenAI(model=model_name["GPT-4"],
                 openai_api_key=openai_api_key,
                 model_kwargs={
                 "frequency_penalty":0.0,
                 "presence_penalty":0.0})
-    
+    # elif selected_model=="Claude3 opus":
+    #     llm=chat = ChatAnthropic(temperature=0, model_name=model_name["Claude3 opus"],anthropic_api_key=anthropic_api_key)
+    # elif selected_model=="Claude3 Sonnet":
+    #     llm=chat = ChatAnthropic(temperature=0, model_name=model_name["Claude3 Sonnet"],anthropic_api_key=anthropic_api_key)
+    # elif selected_model=="Claude3 Haiku":
+    #     llm=chat = ChatAnthropic(temperature=0, model_name=model_name["Claude3 Haiku"],anthropic_api_key=anthropic_api_key)
+    # tokeniser= tiktoken.get_encoding(model_name[selected_model])
+    # encoding = tokeniser.encoding_for_model(model_name[selected_model])
+    # print(f'{encoding}')
     temperature = st.sidebar.slider('temperature', min_value=0.0, max_value=5.0, value=0.1, step=0.01)
-    top_p = st.sidebar.slider('top_p', min_value=0.0, max_value=1.0, value=0.9, step=0.01)
-    max_length = st.sidebar.slider('max_length', min_value=64, max_value=4096, value=3400, step=8)
+    top_p = st.sidebar.slider('top_p', min_value=0.0, max_value=1.0, value=1.0, step=0.01)
+    max_length = st.sidebar.slider('max_length', min_value=64, max_value=4096, value=3600, step=8)
     if temperature:
         llm.temperature = temperature
     if top_p:
@@ -86,7 +103,6 @@ def clear_chat_history():
     st.session_state.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
 st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
-# Function for generating LLaMA2 response
 def generate_llm_response(course,lesson):
     string_dialogue=''
     for dict_message in st.session_state.messages:
@@ -94,26 +110,33 @@ def generate_llm_response(course,lesson):
             string_dialogue += "User: " + dict_message["content"] + "\n\n"
         else:
             string_dialogue += "Assistant: " + dict_message["content"] + "\n\n"
+    # prompt_tokens = len(encoding.encode(first_prompt.messages[0].prompt.format_prompt(course=course,lesson=lesson).to_string()))
+    # print(prompt_tokens)
+    # llm.max_tokens = 4096 - prompt_tokens
     chain_one = LLMChain(llm=llm,prompt=first_prompt, 
                      output_key="lecture"
                     )
     chain_two = LLMChain(llm=llm,prompt=second_prompt, 
-                     output_key="quizzes"
+                     output_key="quiz"
                     )
+    print('*'*100)
+    pprint.pprint(second_prompt)
+    print('*'*100)
+    pprint.pprint(chain_two)
+    print('*'*100)
     chain_three = LLMChain(llm=llm,prompt=third_prompt,
                        output_key="practice_code", )
     chain_four = LLMChain(llm=llm,prompt=forth_prompt,
                        output_key="final_output", 
                       )
-    chains=[chain_one, chain_two, chain_three,chain_four]
+    chains=[chain_one, chain_two, chain_three]
     overall_chain = SequentialChain(
     chains=chains,
     input_variables=["course","lesson"],
-    output_variables=["lecture", "quizzes","practice_code","final_output"],
+    output_variables=["lecture", "quiz","practice_code"],
 
 )    
-    output=overall_chain.invoke({"course":course,"lesson":lesson})
-    return output
+    return overall_chain.invoke({"course":course,"lesson":lesson})
 
 # User-provided prompt
 # if prompt := st.chat_input(disabled=not openai_api_key):
@@ -123,7 +146,7 @@ def generate_llm_response(course,lesson):
 course= st.text_input('Enter Course name',value="Prompt Engineering")
 lesson= st.text_input('Enter Lesson name', value="introduction to prompt engineering with open ai")
 if generate:=st.button('Generate ✨'):
-    st.session_state.disabled = False
+    st.session_state.disabled = True
     if course and lesson:
         st.session_state.messages.append({"role": "user", "content": initail_prompt.format(course=course,lesson=lesson)})
         with st.chat_message("user"):
@@ -132,27 +155,51 @@ if generate:=st.button('Generate ✨'):
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = generate_llm_response(course,lesson)
-            try:
-                response['lecture']=json.loads(response['lecture'])
-                response['lecture']
-                response['quizzes'] = re.sub(r'\b\d+\.\s*\n', '', response['quizzes'])
-                response['quizzes']=json.loads(response['quizzes'])
-                response['quizzes']
-                response['practice_code'] = json.loads(response['practice_code'])
-                response['practice_code']
-                response['final_output']=json.loads(response['final_output'])
-                response['final_output']
-                json_output = demjson3.encode(response)
-            except  Exception as e:
-                print(e)
-            placeholder = st.empty()
+            json_output= None
             full_response = ''
-            # for item in response:
-            #     full_response += item
-            #     placeholder.markdown(full_response)
-            # placeholder.markdown(json_output)
-            filename="json_output.json"
-            st.json(json_output)
-    message = {"role": "assistant", "content": response}
-    st.session_state.messages.append(message)
+            placeholder = st.empty()
+            response=None
+            try:
+                response = generate_llm_response(course,lesson)
+                if is_valid_json(response['lecture']):
+                    response['lecture']=json.loads(response['lecture'])
+                if is_valid_json(response['quiz']):
+                    response['quiz'] = re.sub(r'\b\d+\.\s*\n', '', response['quiz'])
+                    response['quiz']=json.loads(response['quiz'])
+                else:
+                    print(response['quiz'])
+                # for q in response['quiz']['tasks']:
+                #     q['metadata']['hints'].append(Hint(text=q['metadata']['questions']['hint'],cost=0.1)) 
+                if is_valid_json(response['practice_code']):
+                    response['practice_code'] = json.loads(response['practice_code'])
+                if type(response) == dict:
+                    json_output = {
+                    "course":course,
+                    "module":"",
+                    "lesson":lesson,
+                    "tasks":[
+                        response['lecture'],
+                        *response['quiz']['tasks'],
+                        *response['practice_code']['tasks']
+                    ]
+                }
+                else:
+                    json_output = demjson3.encode(response)
+                filename="json_output.json"
+                st.json(json_output)
+                with open(filename, 'w') as json_file:
+                    json.dump(json_output, json_file, indent=4)
+                message = {"role": "assistant", "content": json.dumps(response)}
+                st.session_state.messages.append(message)
+            except Exception as e:
+                # json_part = str(e).split(" - ", 1)
+                # if len(json_part) > 1:
+                #     json_part=str(json_part[1])
+                # else:
+                #     json_part=str(json_part[0])
+                # # Convert the JSON part to a dictionary
+                # error_json = json.loads(json_part)
+                placeholder.error(str(e))
+                
+                message = {"role": "assistant", "content": str(e)}
+                st.session_state.messages.append(message)
