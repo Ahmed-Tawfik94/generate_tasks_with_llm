@@ -119,11 +119,6 @@ def generate_llm_response(course,lesson):
     chain_two = LLMChain(llm=llm,prompt=second_prompt, 
                      output_key="quiz"
                     )
-    print('*'*100)
-    pprint.pprint(second_prompt)
-    print('*'*100)
-    pprint.pprint(chain_two)
-    print('*'*100)
     chain_three = LLMChain(llm=llm,prompt=third_prompt,
                        output_key="practice_code", )
     chain_four = LLMChain(llm=llm,prompt=forth_prompt,
